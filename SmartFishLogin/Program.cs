@@ -4,6 +4,7 @@ using SmartFishLogin.Infra;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.AddLog4Net();
 
 // Add services to the container.
 
