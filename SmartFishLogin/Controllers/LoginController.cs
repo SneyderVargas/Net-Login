@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SmartFishLogin.Core.Dtos;
 using SmartFishLogin.Core.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -21,38 +22,22 @@ namespace SmartFishLogin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] string d, CancellationToken ct)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto param)
         {
+
             try
             {
-
-                var gt = Convert.ToInt32(10000000);
-
-                var claims = new List<Claim> {
-                    new Claim(JwtRegisteredClaimNames.NameId, "sneyder")
-                };
-
-                var expiresDate = DateTime.Now.AddDays(1);
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta Mi palabra secreta Mi palabra secreta Mi palabra secreta Mi palabra secreta"));
-                var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-                var tokenDescripcion = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(claims),
-                    Expires = expiresDate,
-                    SigningCredentials = credenciales,
-                    Audience = "App"
-                };
-
-                var tokenManejador = new JwtSecurityTokenHandler();
-                var token = tokenManejador.CreateToken(tokenDescripcion);
-
-                return Ok(tokenManejador.WriteToken(token));
+                if (!ModelState.IsValid)
+                    return BadRequest(new ResponseErrorApi(ModelState));
+                var result = await _login.Login(param);
+                return Ok(ResponseApi.Response(false, result, message, null));
             }
             catch (Exception ex)
             {
-                return BadRequest(null);
+                _logger.LogError($"log error: {ex.Message}");
+                return BadRequest(ResponseApi.Response(true, null, "No se proceso la información", null));
             }
+            
         }
     }
 }

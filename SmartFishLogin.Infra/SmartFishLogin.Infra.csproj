@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartFishLogin.Core\SmartFishLogin.Core.csproj" />
+    <ProjectReference Include="..\SmartFishLogin.Tokens\SmartFishLogin.Tokens.csproj" />
   </ItemGroup>
 
 </Project>

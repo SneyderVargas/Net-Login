@@ -8,5 +8,6 @@ namespace SmartFishLogin.Tokens.Dtos
 {
     public class TokenDto
     {
+        public string Token {  get; set; }
     }
 }

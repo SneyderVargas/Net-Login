@@ -8,5 +8,6 @@ namespace SmartFishLogin.Core.Dtos
 {
     public class LoginResultDto
     {
+        public string Token { get; set; }
     }
 }
