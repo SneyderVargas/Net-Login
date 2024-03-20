@@ -20,20 +20,18 @@ namespace SmartFishLogin.Tokens.Repositories
 
                 var gt = Convert.ToInt32(10000000);
 
-                var claims = new List<Claim> {
-                    new Claim(JwtRegisteredClaimNames.NameId, "sneyder")
-                };
+                var claims = param.Claims;
 
-                var expiresDate = DateTime.Now.AddDays(1);
+                var expiresDate = param.ExperiTimen;
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta Mi palabra secreta Mi palabra secreta Mi palabra secreta Mi palabra secreta"));
                 var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                 var tokenDescripcion = new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(claims),
-                    Expires = expiresDate,
+                    Subject = new ClaimsIdentity(param.Claims),
+                    Expires = param.ExperiTimen,
                     SigningCredentials = credenciales,
-                    Audience = "App"
+                    Audience = param.Audiencia
                 };
 
                 var tokenManejador = new JwtSecurityTokenHandler();

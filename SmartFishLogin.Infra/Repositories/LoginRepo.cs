@@ -33,10 +33,7 @@ namespace SmartFishLogin.Infra.Repositories
                     ExperiTimen = DateTime.Now.AddDays(1)
                 };
                 var ServisToken = await ClientSmartFistTokens.GenerateToken(ConcreteCreatorSmartFishLogin, ParamTokens);
-
                 token.Token = ServisToken.Token;
-                
-
                 return token;
             }
             catch (Exception ex)

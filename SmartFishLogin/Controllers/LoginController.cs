@@ -25,7 +25,6 @@ namespace SmartFishLogin.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto param)
         {
-
             try
             {
                 if (!ModelState.IsValid)
