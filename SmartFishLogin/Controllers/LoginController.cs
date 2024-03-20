@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using SmartFishLogin.Core.Dtos;
 using SmartFishLogin.Core.Interfaces;
+using SmartFishLogin.Helpers;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -30,7 +31,7 @@ namespace SmartFishLogin.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(new ResponseErrorApi(ModelState));
                 var result = await _login.Login(param);
-                return Ok(ResponseApi.Response(false, result, message, null));
+                return Ok(ResponseApi.Response(false, result, null, null));
             }
             catch (Exception ex)
             {
