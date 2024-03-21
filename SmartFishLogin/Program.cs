@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SmartFishLogin.Core.Interfaces;
+using SmartFishLogin.Helpers;
 using SmartFishLogin.Infra;
 using SmartFishLogin.Infra.Repositories;
 using System.Text;
@@ -16,13 +18,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DefaultDbContext>();
 builder.Services.AddScoped<ILogin, LoginRepo>();
+builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("JwtConfiguration"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtConfiguration:Key"])),
         //IssuerSigningKey = key,
         ValidateAudience = false,
         ValidateIssuer = false
@@ -39,6 +42,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         // Otros eventos...
     };
 });
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Servicio de Auth",
+        Version = "v1"
+    });
+    c.CustomSchemaIds(c => c.FullName);
+});
+
+builder.Services.AddMvc();
 
 var app = builder.Build();
 

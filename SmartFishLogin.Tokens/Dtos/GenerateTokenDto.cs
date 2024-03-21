@@ -12,5 +12,6 @@ namespace SmartFishLogin.Tokens.Dtos
         public string Audiencia { get; set; }
         public List<Claim> Claims { get; set; }
         public DateTime ExperiTimen { get; set; }
+        public string Key { get; set; }
     }
 }

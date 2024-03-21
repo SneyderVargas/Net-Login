@@ -1,4 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using SmartFishLogin.Helpers;
 using SmartFishLogin.Tokens.Dtos;
 using SmartFishLogin.Tokens.Interfaces;
 using System;
@@ -24,7 +26,7 @@ namespace SmartFishLogin.Tokens.Repositories
 
                 var expiresDate = param.ExperiTimen;
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta Mi palabra secreta Mi palabra secreta Mi palabra secreta Mi palabra secreta"));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(param.Key));
                 var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                 var tokenDescripcion = new SecurityTokenDescriptor
                 {

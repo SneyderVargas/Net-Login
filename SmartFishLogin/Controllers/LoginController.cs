@@ -39,5 +39,23 @@ namespace SmartFishLogin.Controllers
             }
             
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterUser([FromBody] LoginRequestDto param)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(new ResponseErrorApi(ModelState));
+                var result = await _login.Login(param);
+                return Ok(ResponseApi.Response(false, result, null, null));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"log error: {ex.Message}");
+                return BadRequest(ResponseApi.Response(true, null, "No se proceso la información", null));
+            }
+
+        }
     }
 }

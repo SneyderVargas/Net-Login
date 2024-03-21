@@ -1,5 +1,7 @@
-﻿using SmartFishLogin.Core.Dtos;
+﻿using Microsoft.Extensions.Options;
+using SmartFishLogin.Core.Dtos;
 using SmartFishLogin.Core.Interfaces;
+using SmartFishLogin.Helpers;
 using SmartFishLogin.Tokens.ClientCode;
 using SmartFishLogin.Tokens.CreatorFile;
 using SmartFishLogin.Tokens.Dtos;
@@ -15,6 +17,12 @@ namespace SmartFishLogin.Infra.Repositories
 {
     public class LoginRepo : ILogin
     {
+        private readonly JwtConfiguration _jwtConfiguration;
+
+        public LoginRepo(IOptions<JwtConfiguration> jwtConfiguration)
+        {
+            _jwtConfiguration = jwtConfiguration.Value;
+        }
         public async Task<LoginResultDto> Login(LoginRequestDto param)
         {
             var token = new LoginResultDto();
@@ -30,7 +38,8 @@ namespace SmartFishLogin.Infra.Repositories
                 {
                     Audiencia = "Login",
                     Claims = claims,
-                    ExperiTimen = DateTime.Now.AddDays(1)
+                    ExperiTimen = DateTime.Now.AddDays(1),
+                    Key = _jwtConfiguration.Key
                 };
                 var ServisToken = await ClientSmartFistTokens.GenerateToken(ConcreteCreatorSmartFishLogin, ParamTokens);
                 token.Token = ServisToken.Token;
