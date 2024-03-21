@@ -9,8 +9,7 @@ using System.Text;
 
 namespace SmartFishLogin.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class LoginController : Controller
     {
         private readonly ILogin _login;
@@ -41,13 +40,17 @@ namespace SmartFishLogin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromBody] LoginRequestDto param)
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterUserRequestDto param)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(new ResponseErrorApi(ModelState));
-                var result = await _login.Login(param);
+                if (param.Password != param.PasswordRepeat)
+                {
+                    return BadRequest(new ResponseErrorApi("Las contraseñas no son iguales"));
+                }
+                var result = await _login.RegisterUser(param);
                 return Ok(ResponseApi.Response(false, result, null, null));
             }
             catch (Exception ex)

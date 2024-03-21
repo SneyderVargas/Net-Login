@@ -51,5 +51,18 @@ namespace SmartFishLogin.Infra.Repositories
                 throw new Exception(mensajeModificado);
             }
         }
+
+        public async Task<LoginResultDto> RegisterUser(RegisterUserRequestDto param)
+        {
+            try
+            {
+                return null;
+            }
+            catch (Exception ex)
+            {
+                string mensajeModificado = $"{ex.Message} <- (Clase: {GetType().Name}, Método : {nameof(Login)})";
+                throw new Exception(mensajeModificado);
+            }
+        }
     }
 }

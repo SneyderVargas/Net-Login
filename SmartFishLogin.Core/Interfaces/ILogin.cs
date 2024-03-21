@@ -10,5 +10,6 @@ namespace SmartFishLogin.Core.Interfaces
     public interface ILogin
     {
         Task<LoginResultDto> Login(LoginRequestDto param);
+        Task<LoginResultDto> RegisterUser(RegisterUserRequestDto param);
     }
 }
