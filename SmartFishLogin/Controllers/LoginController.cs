@@ -60,5 +60,26 @@ namespace SmartFishLogin.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> RegisterCompany([FromBody] RegisterUserRequestDto param)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(new ResponseErrorApi(ModelState));
+                if (param.Password != param.PasswordRepeat)
+                {
+                    return BadRequest(new ResponseErrorApi("Las contraseñas no son iguales"));
+                }
+                var result = await _login.RegisterUser(param);
+                return Ok(ResponseApi.Response(false, result, null, null));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"log error: {ex.Message}");
+                return BadRequest(ResponseApi.Response(true, null, "No se proceso la información", null));
+            }
+
+        }
     }
 }

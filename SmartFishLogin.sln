@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFishLogin.Core", "Smar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFishLogin.Infra", "SmartFishLogin.Infra\SmartFishLogin.Infra.csproj", "{B58A14ED-3E9D-4F43-B1F0-D9CFA536D579}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFishLogin.Tokens", "SmartFishLogin.Tokens\SmartFishLogin.Tokens.csproj", "{2ECEABCB-EA18-4FE2-9E99-D65C76A18B9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFishLogin.Tokens", "SmartFishLogin.Tokens\SmartFishLogin.Tokens.csproj", "{2ECEABCB-EA18-4FE2-9E99-D65C76A18B9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFishLogin.encryp", "SmartFishLogin.encryp\SmartFishLogin.encryp.csproj", "{0843A258-D910-4E41-9514-59B1AC6B3557}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2ECEABCB-EA18-4FE2-9E99-D65C76A18B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ECEABCB-EA18-4FE2-9E99-D65C76A18B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ECEABCB-EA18-4FE2-9E99-D65C76A18B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0843A258-D910-4E41-9514-59B1AC6B3557}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0843A258-D910-4E41-9514-59B1AC6B3557}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0843A258-D910-4E41-9514-59B1AC6B3557}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0843A258-D910-4E41-9514-59B1AC6B3557}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
