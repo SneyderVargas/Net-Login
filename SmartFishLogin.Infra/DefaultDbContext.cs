@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SmartFishLogin.Infra
 {
-    public class DefaultDbContext : IdentityDbContext<UserEntity, RoleEntity, string>
+    public class DefaultDbContext : IdentityDbContext<UsersEntity, RoleEntity, string>
     {
         private string _connectionString;
         public DefaultDbContext(IConfiguration configuration)
@@ -20,7 +20,10 @@ namespace SmartFishLogin.Infra
             _connectionString = configuration.GetConnectionString("DbContextDefault");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { }
+        {
+            base.OnModelCreating(modelBuilder);
+            UserEntity.OnModelCreating(modelBuilder);
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySQL(GetConnection());
@@ -29,5 +32,6 @@ namespace SmartFishLogin.Infra
         {
             return new MySqlConnection(_connectionString);
         }
+        public DbSet<UserEntity> userEntities { get; set; }
     }
 }

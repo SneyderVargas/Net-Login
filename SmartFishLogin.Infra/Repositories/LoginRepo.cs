@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SmartFishLogin.Core.Dtos;
 using SmartFishLogin.Core.Interfaces;
 using SmartFishLogin.Helpers;
@@ -18,16 +19,20 @@ namespace SmartFishLogin.Infra.Repositories
     public class LoginRepo : ILogin
     {
         private readonly JwtConfiguration _jwtConfiguration;
+        private readonly DefaultDbContext _defaultDbContext;
 
-        public LoginRepo(IOptions<JwtConfiguration> jwtConfiguration)
+        public LoginRepo(IOptions<JwtConfiguration> jwtConfiguration, DefaultDbContext defaultDbContext)
         {
             _jwtConfiguration = jwtConfiguration.Value;
+            _defaultDbContext = defaultDbContext;
         }
+
         public async Task<LoginResultDto> Login(LoginRequestDto param)
         {
             var token = new LoginResultDto();
             try
             {
+                
                 var ClientSmartFistTokens = new ClientToken();
                 var ConcreteCreatorSmartFishLogin = new ConcreteCreatorToken();
 
@@ -56,6 +61,7 @@ namespace SmartFishLogin.Infra.Repositories
         {
             try
             {
+                var User = await _defaultDbContext.userEntities.ToListAsync();
                 return null;
             }
             catch (Exception ex)
