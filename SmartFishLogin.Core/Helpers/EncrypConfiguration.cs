@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartFishLogin.encryp.Dtos
+namespace SmartFishLogin.Core.Helpers
 {
-    public class DataEncryp
+    public class EncrypConfiguration
     {
-        public string Encryp {  get; set; }
         public string Key { get; set; }
-        public string Password { get; set; }
     }
 }

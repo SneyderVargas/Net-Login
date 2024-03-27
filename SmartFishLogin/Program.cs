@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SmartFishLogin.Core.Helpers;
 using SmartFishLogin.Core.Interfaces;
 using SmartFishLogin.Helpers;
 using SmartFishLogin.Infra;
@@ -19,6 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DefaultDbContext>();
 builder.Services.AddScoped<ILogin, LoginRepo>();
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("JwtConfiguration"));
+builder.Services.Configure<EncrypConfiguration>(builder.Configuration.GetSection("EncrypConfiguration"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

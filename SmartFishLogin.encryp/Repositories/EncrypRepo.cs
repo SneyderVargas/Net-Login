@@ -45,7 +45,8 @@ namespace SmartFishLogin.encryp.Repositories
             {
 
                 var returData = new EncrypDto();
-                returData.DataEncry = DesencriptarContrasena("gET1Q2DsKov1TrjceTzZ90ja7dPrzCE/5MVv88nCJ/s=", "AAECAwQFBgcICQoLDA0ODw==");
+                returData.DataEncry = DesencriptarContrasena(param.Password, param.Key);
+                //returData.DataEncry = DesencriptarContrasena("gET1Q2DsKov1TrjceTzZ90ja7dPrzCE/5MVv88nCJ/s=", "AAECAwQFBgcICQoLDA0ODw==");
                 return returData;
             }
             catch (Exception ex)
@@ -60,7 +61,8 @@ namespace SmartFishLogin.encryp.Repositories
             try
             {
                 var returData = new EncrypDto();
-                returData.DataEncry = EncriptarContrasena("tu_contrasena.==", "AAECAwQFBgcICQoLDA0ODw==");
+                returData.DataEncry = EncriptarContrasena(param.Password, param.Key);
+                //returData.DataEncry = EncriptarContrasena("tu_contrasena.==", "AAECAwQFBgcICQoLDA0ODw==");
                 return returData;
             }
             catch (Exception ex)

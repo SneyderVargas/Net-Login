@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SmartFishLogin.Core.Dtos;
+using SmartFishLogin.Core.Helpers;
 using SmartFishLogin.Core.Interfaces;
 using SmartFishLogin.encryp.ClientCode;
 using SmartFishLogin.encryp.CreatorFile;
@@ -23,11 +24,13 @@ namespace SmartFishLogin.Infra.Repositories
     {
         private readonly JwtConfiguration _jwtConfiguration;
         private readonly DefaultDbContext _defaultDbContext;
+        private readonly EncrypConfiguration _encrypConfiguration;
 
-        public LoginRepo(IOptions<JwtConfiguration> jwtConfiguration, DefaultDbContext defaultDbContext)
+        public LoginRepo(IOptions<JwtConfiguration> jwtConfiguration, DefaultDbContext defaultDbContext, IOptions<EncrypConfiguration> encrypConfiguration)
         {
             _jwtConfiguration = jwtConfiguration.Value;
             _defaultDbContext = defaultDbContext;
+            _encrypConfiguration = encrypConfiguration.Value;
         }
 
         public async Task<LoginResultDto> Login(LoginRequestDto param)
@@ -76,11 +79,17 @@ namespace SmartFishLogin.Infra.Repositories
 
                 var parametrosEncryp = new DataEncryp
                 {
-                    Encryp = _jwtConfiguration.Key
+                    Key = _encrypConfiguration.Key,
+                    Password = param.Password
                 };
 
                 var ServisEncrypt = await ClientSmartSifhEncryp.Encryption(ConcreteCreatorSmartFishEncryp, parametrosEncryp);
-                var ServisDesEncrypt = await ClientSmartSifhEncryp.DesEncryption(ConcreteCreatorSmartFishEncryp, parametrosEncryp);
+                var parametrosDesEncryp = new DataEncryp
+                {
+                    Key = _encrypConfiguration.Key,
+                    Password = ServisEncrypt.DataEncry
+                };
+                var ServisDesEncrypt = await ClientSmartSifhEncryp.DesEncryption(ConcreteCreatorSmartFishEncryp, parametrosDesEncryp);
                 return null;
             }
             catch (Exception ex)
