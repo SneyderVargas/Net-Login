@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Options;
 using SmartFishLogin.Core.Dtos;
 using SmartFishLogin.Core.Interfaces;
+using SmartFishLogin.encryp.ClientCode;
+using SmartFishLogin.encryp.CreatorFile;
+using SmartFishLogin.encryp.Dtos;
 using SmartFishLogin.Helpers;
 using SmartFishLogin.Tokens.ClientCode;
 using SmartFishLogin.Tokens.CreatorFile;
@@ -61,7 +64,23 @@ namespace SmartFishLogin.Infra.Repositories
         {
             try
             {
-                var User = await _defaultDbContext.userEntities.ToListAsync();
+                // consultar que el usuario este registrado
+                var User = await _defaultDbContext.userEntities.Where(a => a.Email == param.Email).ToListAsync();
+                if (User.Count > 0)
+                {
+                    string mensajeModificado = $" Email registrado en el sistema <- (Clase: {GetType().Name}, Método : {nameof(Login)})";
+                    throw new Exception(mensajeModificado);
+                }
+                var ClientSmartSifhEncryp = new ClientEncryp();
+                var ConcreteCreatorSmartFishEncryp = new ConcreteCreatorEncryp();
+
+                var parametrosEncryp = new DataEncryp
+                {
+                    Encryp = _jwtConfiguration.Key
+                };
+
+                var ServisEncrypt = await ClientSmartSifhEncryp.Encryption(ConcreteCreatorSmartFishEncryp, parametrosEncryp);
+                var ServisDesEncrypt = await ClientSmartSifhEncryp.DesEncryption(ConcreteCreatorSmartFishEncryp, parametrosEncryp);
                 return null;
             }
             catch (Exception ex)

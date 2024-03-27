@@ -16,5 +16,10 @@ namespace SmartFishLogin.encryp.CreatorFile
             var Ec = Encryp();
             return await Ec.Encryption(param);
         }
+        public async Task<EncrypDto> DesEncryption(DataEncryp param)
+        {
+            var Ec = Encryp();
+            return await Ec.DesEncryption(param);
+        }
     }
 }

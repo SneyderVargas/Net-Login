@@ -14,5 +14,9 @@ namespace SmartFishLogin.encryp.ClientCode
         {
             return creator.Encryption(param);
         }
+        public Task<EncrypDto> DesEncryption(CreatorEncryp creator, DataEncryp param)
+        {
+            return creator.DesEncryption(param);
+        }
     }
 }
