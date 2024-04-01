@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using SmartFishLogin.Core.Dtos;
 using SmartFishLogin.Core.Helpers;
 using SmartFishLogin.Core.Interfaces;
+using SmartFishLogin.Core.Models;
 using SmartFishLogin.encryp.ClientCode;
 using SmartFishLogin.encryp.CreatorFile;
 using SmartFishLogin.encryp.Dtos;
@@ -38,7 +39,23 @@ namespace SmartFishLogin.Infra.Repositories
             var token = new LoginResultDto();
             try
             {
-                
+                UserEntity User = await _defaultDbContext.userEntities.Where(a => a.Email == param.NameUser).FirstAsync();
+
+                var ClientSmartSifhEncryp = new ClientEncryp();
+                var ConcreteCreatorSmartFishEncryp = new ConcreteCreatorEncryp();
+                var parametrosEncryp = new DataEncryp
+                {
+                    Key = _encrypConfiguration.Key,
+                    Password = param.PasswordUser
+                };
+                var ServisDesEncrypt = await ClientSmartSifhEncryp.Encryption(ConcreteCreatorSmartFishEncryp, parametrosEncryp);
+
+                if (ServisDesEncrypt.DataEncry != User.Password)
+                {
+                    string mensajeModificado = $" Error de contraseña <- (Clase: {GetType().Name}, Método : {nameof(Login)})";
+                    throw new Exception(mensajeModificado);
+                }
+
                 var ClientSmartFistTokens = new ClientToken();
                 var ConcreteCreatorSmartFishLogin = new ConcreteCreatorToken();
 
@@ -90,6 +107,37 @@ namespace SmartFishLogin.Infra.Repositories
                     Password = ServisEncrypt.DataEncry
                 };
                 var ServisDesEncrypt = await ClientSmartSifhEncryp.DesEncryption(ConcreteCreatorSmartFishEncryp, parametrosDesEncryp);
+                // proceso de guardar el registro de usuarios.
+                //BeginTransaction 001
+                using (var transac = _defaultDbContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //var resDetPry = consecutivos
+                        //        .Where(a => a.listaMensajesProceso != null)
+                        //        .SelectMany(itemConse => itemConse.listaMensajesProceso
+                        //            .Select(itemMensaje => new WSFelMensajesprocesoEntity
+                        //            {
+                        //                IdWsFelRespuestaenvio = felresdocumentpry.Where(a => a.Prefijo == requestDto.prefijo && a.Consecutivo == itemConse.consecutivo).Select(b => b.Id).FirstOrDefault(),
+                        //                CodigoMensajeField = itemMensaje.codigoMensaje,
+                        //                DescripcionMensajeField = itemMensaje.descripcionMensaje,
+                        //                RechazoNotificacionField = itemMensaje.rechazoNotificacion
+                        //            }).ToList()
+                        //        ).ToList();
+
+                        //await _defaultDbContext.WSFelMensajesprocesoEntities.AddRangeAsync(resDetPry);
+                        //await _defaultDbContext.SaveChangesAsync();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        transac.Rollback();
+                        string mensajeModificado = $"{ex.Message} <- (Clase: {GetType().Name}, Método and BeginTransaction 001 : {nameof(RegisterUser)})";
+                        throw new Exception(mensajeModificado);
+                    }
+                    transac.Commit();
+
+                }
                 return null;
             }
             catch (Exception ex)
