@@ -15,5 +15,7 @@ namespace SmartFishLogin.Core.Dtos
         public string Password { get; set; }
         [Required(ErrorMessage = "Repetir contraseña de usuario es requerido")]
         public string PasswordRepeat { get; set; }
+        [Required(ErrorMessage = "Nombre de usuario es requerido")]
+        public string UserName { get; set; }
     }
 }

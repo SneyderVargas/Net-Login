@@ -101,18 +101,37 @@ namespace SmartFishLogin.Infra.Repositories
                 };
 
                 var ServisEncrypt = await ClientSmartSifhEncryp.Encryption(ConcreteCreatorSmartFishEncryp, parametrosEncryp);
-                var parametrosDesEncryp = new DataEncryp
-                {
-                    Key = _encrypConfiguration.Key,
-                    Password = ServisEncrypt.DataEncry
-                };
-                var ServisDesEncrypt = await ClientSmartSifhEncryp.DesEncryption(ConcreteCreatorSmartFishEncryp, parametrosDesEncryp);
+
+                //var parametrosDesEncryp = new DataEncryp
+                //{
+                //    Key = _encrypConfiguration.Key,
+                //    Password = ServisEncrypt.DataEncry
+                //};
+                //var ServisDesEncrypt = await ClientSmartSifhEncryp.DesEncryption(ConcreteCreatorSmartFishEncryp, parametrosDesEncryp);
+
                 // proceso de guardar el registro de usuarios.
                 //BeginTransaction 001
                 using (var transac = _defaultDbContext.Database.BeginTransaction())
                 {
                     try
                     {
+                        var user = new UserEntity
+                        {
+                            Email = param.Email,
+                            Name = param.UserName,
+                            Password = ServisEncrypt.DataEncry,
+                            TypeUsers = "1",
+                            Data = null,
+                            LastLogin = DateTime.Now,
+                            Active = 1,
+                            CreateRegisterDate = DateTime.Now,
+                            UpdateRegisterDate = DateTime.Now,
+                            ActiveRegister = 1,
+                            Tenancies = 1,
+                            Steps = ""
+                        };
+                        await _defaultDbContext.userEntities.AddAsync(user);
+                        await _defaultDbContext.SaveChangesAsync();
                         //var resDetPry = consecutivos
                         //        .Where(a => a.listaMensajesProceso != null)
                         //        .SelectMany(itemConse => itemConse.listaMensajesProceso

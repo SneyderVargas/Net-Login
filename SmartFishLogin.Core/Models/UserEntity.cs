@@ -16,10 +16,10 @@ namespace SmartFishLogin.Core.Models
         public string? TypeUsers { get; set; }  // Default value of 'null' might need handling
         public string? Data { get; set; }
         public DateTime? LastLogin { get; set; } // Nullable DateTime for potential null values
-        public bool? Active { get; set; }
+        public int? Active { get; set; }
         public DateTime? CreateRegisterDate { get; set; } // Nullable DateTime for potential null values
         public DateTime? UpdateRegisterDate { get; set; } // Nullable DateTime for potential null values
-        public bool? ActiveRegister { get; set; }
+        public int? ActiveRegister { get; set; }
         public int? Tenancies { get; set; }  // Assuming tenancys is an integer based on the schema
         public string? Steps { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
