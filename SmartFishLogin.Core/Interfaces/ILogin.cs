@@ -1,4 +1,5 @@
 ﻿using SmartFishLogin.Core.Dtos;
+using SmartFishLogin.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace SmartFishLogin.Core.Interfaces
     public interface ILogin
     {
         Task<LoginResultDto> Login(LoginRequestDto param);
-        Task<LoginResultDto> RegisterUser(RegisterUserRequestDto param);
+        Task<(LoginResultDto, List<ErrorsListDto>)> RegisterUser(RegisterUserRequestDto param);
     }
 }

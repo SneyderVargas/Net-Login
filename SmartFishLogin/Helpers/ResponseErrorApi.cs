@@ -11,7 +11,8 @@ namespace SmartFishLogin.Helpers
 
         public string Detail { get; set; }
         public int codigoError { get; set; }
-        public Array aditionalInformation { get; set; }
+        public Array AditionalInformation { get; set; }
+        public List <ErrorsListDto> Errors { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         [DefaultValue("")]
@@ -21,9 +22,10 @@ namespace SmartFishLogin.Helpers
         {
         }
 
-        public ResponseErrorApi(string message)
+        public ResponseErrorApi(string message, List<ErrorsListDto> errors)
         {
             Message = message;
+            Errors = errors;
         }
 
         public ResponseErrorApi(ModelStateDictionary modelState)

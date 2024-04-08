@@ -46,11 +46,9 @@ namespace SmartFishLogin.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest(new ResponseErrorApi(ModelState));
-                if (param.Password != param.PasswordRepeat)
-                {
-                    return BadRequest(new ResponseErrorApi("Las contraseñas no son iguales"));
-                }
-                var result = await _login.RegisterUser(param);
+                var (result, errors) = await _login.RegisterUser(param);
+                if(errors.Count > 0)
+                    return BadRequest(new ResponseErrorApi("Las contraseñas no son iguales", errors));
                 return Ok(ResponseApi.Response(false, result, null, null));
             }
             catch (Exception ex)
@@ -69,7 +67,7 @@ namespace SmartFishLogin.Controllers
                     return BadRequest(new ResponseErrorApi(ModelState));
                 if (param.Password != param.PasswordRepeat)
                 {
-                    return BadRequest(new ResponseErrorApi("Las contraseñas no son iguales"));
+                    return BadRequest(new ResponseErrorApi("Las contraseñas no son iguales", null));
                 }
                 var result = await _login.RegisterUser(param);
                 return Ok(ResponseApi.Response(false, result, null, null));

@@ -80,17 +80,29 @@ namespace SmartFishLogin.Infra.Repositories
             }
         }
 
-        public async Task<LoginResultDto> RegisterUser(RegisterUserRequestDto param)
+        public async Task<(LoginResultDto, List<ErrorsListDto>)> RegisterUser(RegisterUserRequestDto param)
         {
+            List<ErrorsListDto> errors = new List<ErrorsListDto>();
             try
             {
                 // consultar que el usuario este registrado
                 var User = await _defaultDbContext.userEntities.Where(a => a.Email == param.Email).ToListAsync();
                 if (User.Count > 0)
                 {
-                    string mensajeModificado = $" Email registrado en el sistema <- (Clase: {GetType().Name}, Método : {nameof(Login)})";
-                    throw new Exception(mensajeModificado);
+                    var errorDuplicateUser = new ErrorsListDto("El usuario ya esta registrado en el sistema.", "Por favor verificar la información");
+                    errors.Add(errorDuplicateUser);
                 }
+                if (param.Password == param.PasswordRepeat)
+                {
+                    var errorDuplicateUser = new ErrorsListDto("Las contraseñas no son iguales", "Por favor verificar la información");
+                    errors.Add(errorDuplicateUser);
+                }
+                // validar que no exista ningun error
+                if (errors.Count > 0) 
+                {
+                    return (null, errors);
+                }
+                // ----------------------------------------------- bloque de creacion de constraseña ---------------------------------------------------------
                 var ClientSmartSifhEncryp = new ClientEncryp();
                 var ConcreteCreatorSmartFishEncryp = new ConcreteCreatorEncryp();
 
@@ -157,7 +169,7 @@ namespace SmartFishLogin.Infra.Repositories
                     transac.Commit();
 
                 }
-                return null;
+                return (null, errors);
             }
             catch (Exception ex)
             {
