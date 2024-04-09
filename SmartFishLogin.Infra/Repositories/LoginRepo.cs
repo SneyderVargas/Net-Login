@@ -8,6 +8,7 @@ using SmartFishLogin.encryp.ClientCode;
 using SmartFishLogin.encryp.CreatorFile;
 using SmartFishLogin.encryp.Dtos;
 using SmartFishLogin.Helpers;
+using SmartFishLogin.Infra.Resx;
 using SmartFishLogin.Tokens.ClientCode;
 using SmartFishLogin.Tokens.CreatorFile;
 using SmartFishLogin.Tokens.Dtos;
@@ -89,12 +90,12 @@ namespace SmartFishLogin.Infra.Repositories
                 var User = await _defaultDbContext.userEntities.Where(a => a.Email == param.Email).ToListAsync();
                 if (User.Count > 0)
                 {
-                    var errorDuplicateUser = new ErrorsListDto("El usuario ya esta registrado en el sistema.", "Por favor verificar la información");
+                    var errorDuplicateUser = new ErrorsListDto(SecurityMsg.duplycateUser, SecurityMsg.verifyInfo);
                     errors.Add(errorDuplicateUser);
                 }
                 if (param.Password == param.PasswordRepeat)
                 {
-                    var errorDuplicateUser = new ErrorsListDto("Las contraseñas no son iguales", "Por favor verificar la información");
+                    var errorDuplicateUser = new ErrorsListDto(SecurityMsg.equalPass, SecurityMsg.verifyInfo);
                     errors.Add(errorDuplicateUser);
                 }
                 // validar que no exista ningun error

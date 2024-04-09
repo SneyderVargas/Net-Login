@@ -48,13 +48,13 @@ namespace SmartFishLogin.Controllers
                     return BadRequest(new ResponseErrorApi(ModelState));
                 var (result, errors) = await _login.RegisterUser(param);
                 if(errors.Count > 0)
-                    return BadRequest(new ResponseErrorApi("Las contraseñas no son iguales", errors));
+                    return BadRequest(new ResponseErrorApi("NO se proceso la información validacion del sistema", errors));
                 return Ok(ResponseApi.Response(false, result, null, null));
             }
             catch (Exception ex)
             {
                 _logger.LogError($"log error: {ex.Message}");
-                return BadRequest(ResponseApi.Response(true, null, "No se proceso la información", null));
+                return BadRequest(ResponseApi.Response(true, null, "No se proceso la información error de sistema", null));
             }
 
         }
