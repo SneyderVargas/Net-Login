@@ -19,6 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DefaultDbContext>();
 builder.Services.AddScoped<ILogin, LoginRepo>();
+builder.Services.AddScoped<IRole, RolesRepo>();
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("JwtConfiguration"));
 builder.Services.Configure<EncrypConfiguration>(builder.Configuration.GetSection("EncrypConfiguration"));
 

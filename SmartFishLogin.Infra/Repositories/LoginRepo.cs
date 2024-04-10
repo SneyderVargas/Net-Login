@@ -35,9 +35,11 @@ namespace SmartFishLogin.Infra.Repositories
             _encrypConfiguration = encrypConfiguration.Value;
         }
 
-        public async Task<LoginResultDto> Login(LoginRequestDto param)
+        public async Task<(LoginResultDto, List<ErrorsListDto>)> Login(LoginRequestDto param)
         {
             var token = new LoginResultDto();
+            List<ErrorsListDto> errors = new List<ErrorsListDto>();
+
             try
             {
                 UserEntity User = await _defaultDbContext.userEntities.Where(a => a.Email == param.NameUser).FirstAsync();
@@ -53,10 +55,14 @@ namespace SmartFishLogin.Infra.Repositories
 
                 if (ServisDesEncrypt.DataEncry != User.Password)
                 {
-                    string mensajeModificado = $" Error de contraseña <- (Clase: {GetType().Name}, Método : {nameof(Login)})";
-                    throw new Exception(mensajeModificado);
+                    var errorDuplicateUser = new ErrorsListDto(SecurityMsg.errorAuth, SecurityMsg.verifyInfo);
+                    errors.Add(errorDuplicateUser);
                 }
-
+                // validar que no exista ningun error
+                if (errors.Count > 0)
+                {
+                    return (null, errors);
+                }
                 var ClientSmartFistTokens = new ClientToken();
                 var ConcreteCreatorSmartFishLogin = new ConcreteCreatorToken();
 
@@ -72,7 +78,7 @@ namespace SmartFishLogin.Infra.Repositories
                 };
                 var ServisToken = await ClientSmartFistTokens.GenerateToken(ConcreteCreatorSmartFishLogin, ParamTokens);
                 token.Token = ServisToken.Token;
-                return token;
+                return (token, errors);
             }
             catch (Exception ex)
             {

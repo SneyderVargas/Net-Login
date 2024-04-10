@@ -28,7 +28,9 @@ namespace SmartFishLogin.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest(new ResponseErrorApi(ModelState));
-                var result = await _login.Login(param);
+                var (result, errors) = await _login.Login(param);
+                if (errors.Count > 0)
+                    return BadRequest(new ResponseErrorApi("NO se proceso la información validacion del sistema", errors));
                 return Ok(ResponseApi.Response(false, result, null, null));
             }
             catch (Exception ex)

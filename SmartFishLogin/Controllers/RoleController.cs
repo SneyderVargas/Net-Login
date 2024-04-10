@@ -10,10 +10,12 @@ namespace SmartFishLogin.Controllers
     public class RoleController : Controller
     {
         private readonly IRole _role;
+        private readonly ILogger<LoginController> _logger;
 
-        public RoleController(IRole role)
+        public RoleController(IRole role, ILogger<LoginController> logger)
         {
             _role = role;
+            _logger = logger;
         }
 
         [HttpPost]

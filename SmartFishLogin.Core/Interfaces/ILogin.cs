@@ -10,7 +10,7 @@ namespace SmartFishLogin.Core.Interfaces
 {
     public interface ILogin
     {
-        Task<LoginResultDto> Login(LoginRequestDto param);
+        Task<(LoginResultDto, List<ErrorsListDto>)> Login(LoginRequestDto param);
         Task<(LoginResultDto, List<ErrorsListDto>)> RegisterUser(RegisterUserRequestDto param);
     }
 }

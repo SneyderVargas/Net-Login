@@ -11,5 +11,6 @@ namespace SmartFishLogin.Infra.Resx
         public const string duplycateUser = "El usuario esta registrado en el sistema";
         public const string verifyInfo = "Por favor verificar la información";
         public const string equalPass = "Las contraseñas no coinciden";
+        public const string errorAuth = "Contraseña o usuario no coinciden";
     }
 }

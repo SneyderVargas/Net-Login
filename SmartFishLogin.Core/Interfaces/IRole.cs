@@ -1,4 +1,6 @@
 ﻿using SmartFishLogin.Core.Dtos;
+using SmartFishLogin.Core.Models;
+using SmartFishLogin.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,6 @@ namespace SmartFishLogin.Core.Interfaces
 {
     public interface IRole
     {
-        Task<LoginResultDto> Register(LoginRequestDto param);
+        Task<(RegisterResultDto<RolesEntity>, List<ErrorsListDto>)> Register(LoginRequestDto param);
     }
 }
