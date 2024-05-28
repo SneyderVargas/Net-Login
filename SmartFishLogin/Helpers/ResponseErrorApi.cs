@@ -30,11 +30,14 @@ namespace SmartFishLogin.Helpers
 
         public ResponseErrorApi(ModelStateDictionary modelState)
         {
-            Message = SecurityMsg.RequiredDefault;
-            Detail = modelState
+            var model = modelState
               .FirstOrDefault(x => x.Value.Errors.Any()).Value.Errors
               .FirstOrDefault().ErrorMessage;
-            codigoError = 1;
+            List<ErrorsListDto> errors = new List<ErrorsListDto>();
+            var error = new ErrorsListDto (SecurityMsg.RequiredDefault, model);
+            errors.Add(error);
+            Message = SecurityMsg.RequiredDefault;
+            Errors = errors;
         }    
     }
 }

@@ -27,16 +27,16 @@ namespace SmartFishLogin.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                    return BadRequest(new ResponseErrorApi(ModelState));
+                    return BadRequest(ResponseApi<string>.ResponseValidacion(ModelState));
                 var (result, errors) = await _login.Login(param);
                 if (errors.Count > 0)
                     return BadRequest(new ResponseErrorApi("NO se proceso la información validacion del sistema", errors));
-                return Ok(ResponseApi.Response(false, result, null, null));
+                return Ok(ResponseApi<string>.ResponseLogin(result.Token));
             }
             catch (Exception ex)
             {
                 _logger.LogError($"log error: {ex.Message}");
-                return BadRequest(ResponseApi.Response(true, null, "No se proceso la información", null));
+                return BadRequest(ResponseApi<string>.Response("No se proceso la información"));
             }
             
         }
@@ -56,7 +56,7 @@ namespace SmartFishLogin.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"log error: {ex.Message}");
-                return BadRequest(ResponseApi.Response(true, null, "No se proceso la información error de sistema", null));
+                return BadRequest(new ResponseErrorApi("No se proceso la información error de sistema", null));
             }
 
         }
