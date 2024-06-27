@@ -23,6 +23,8 @@ namespace SmartFishLogin.Infra.Repositories
         {
             try
             {
+                //var data  = new BaseRepo<RoleEntity>(_defaultDbContext);
+                //data.GetAll();
                 return (null, null);
             }
             catch (Exception ex)

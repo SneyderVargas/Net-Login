@@ -35,14 +35,26 @@ namespace SmartFishLogin.Infra.Repositories
             _encrypConfiguration = encrypConfiguration.Value;
         }
 
-        public async Task<(LoginResultDto, List<ErrorsListDto>)> Login(LoginRequestDto param)
+        public async Task<ResultDto<LoginResultDto, List<ErrorsListDto>>> Login(LoginRequestDto param)
         {
             var token = new LoginResultDto();
             List<ErrorsListDto> errors = new List<ErrorsListDto>();
 
             try
             {
-                UserEntity User = await _defaultDbContext.userEntities.Where(a => a.Email == param.NameUser).FirstAsync();
+                UserEntity User = await _defaultDbContext.userEntities.Where(a => a.Email == param.NameUser).FirstOrDefaultAsync();
+
+                if (User == null)
+                {
+                    var errorDuplicateUser = new ErrorsListDto(SecurityMsg.errorAuth, SecurityMsg.verifyInfo);
+                    errors.Add(errorDuplicateUser);
+
+                    var r = new ResultDto<LoginResultDto, List<ErrorsListDto>>();
+                    r.Resul = null;
+                    r.Error = errors;
+                    return r;
+                }
+                    
 
                 var ClientSmartSifhEncryp = new ClientEncryp();
                 var ConcreteCreatorSmartFishEncryp = new ConcreteCreatorEncryp();
@@ -61,7 +73,10 @@ namespace SmartFishLogin.Infra.Repositories
                 // validar que no exista ningun error
                 if (errors.Count > 0)
                 {
-                    return (null, errors);
+                    var r = new ResultDto<LoginResultDto, List<ErrorsListDto>>();
+                    r.Resul = null;
+                    r.Error = errors;
+                    return  r;
                 }
                 var ClientSmartFistTokens = new ClientToken();
                 var ConcreteCreatorSmartFishLogin = new ConcreteCreatorToken();
@@ -78,7 +93,11 @@ namespace SmartFishLogin.Infra.Repositories
                 };
                 var ServisToken = await ClientSmartFistTokens.GenerateToken(ConcreteCreatorSmartFishLogin, ParamTokens);
                 token.Token = ServisToken.Token;
-                return (token, errors);
+
+                var rr = new ResultDto<LoginResultDto, List<ErrorsListDto>>();
+                rr.Resul = token;
+                rr.Error = errors;
+                return rr;
             }
             catch (Exception ex)
             {
@@ -87,7 +106,7 @@ namespace SmartFishLogin.Infra.Repositories
             }
         }
 
-        public async Task<(LoginResultDto, List<ErrorsListDto>)> RegisterUser(RegisterUserRequestDto param)
+        public async Task<ResultDto<LoginResultDto, List<ErrorsListDto>>> RegisterUser(RegisterUserRequestDto param)
         {
             List<ErrorsListDto> errors = new List<ErrorsListDto>();
             try
@@ -107,7 +126,10 @@ namespace SmartFishLogin.Infra.Repositories
                 // validar que no exista ningun error
                 if (errors.Count > 0) 
                 {
-                    return (null, errors);
+                    var r = new ResultDto<LoginResultDto, List<ErrorsListDto>>();
+                    r.Resul = null;
+                    r.Error = errors;
+                    return r;
                 }
                 // ----------------------------------------------- bloque de creacion de constraseña ---------------------------------------------------------
                 var ClientSmartSifhEncryp = new ClientEncryp();
@@ -175,8 +197,16 @@ namespace SmartFishLogin.Infra.Repositories
                     }
                     transac.Commit();
 
+                    var rr = new ResultDto<LoginResultDto, List<ErrorsListDto>>();
+                    rr.Resul = null;
+                    rr.Error = null;
+                    return rr;
+
                 }
-                return (null, errors);
+                var rrr = new ResultDto<LoginResultDto, List<ErrorsListDto>>();
+                rrr.Resul = null;
+                rrr.Error = errors;
+                return rrr;
             }
             catch (Exception ex)
             {
