@@ -22,13 +22,13 @@ using System.Threading.Tasks;
 
 namespace SmartFishLogin.Infra.Repositories
 {
-    public class LoginRepo : ILogin
+    public class AccountRepo : IAccount
     {
         private readonly JwtConfiguration _jwtConfiguration;
         private readonly DefaultDbContext _defaultDbContext;
         private readonly EncrypConfiguration _encrypConfiguration;
 
-        public LoginRepo(IOptions<JwtConfiguration> jwtConfiguration, DefaultDbContext defaultDbContext, IOptions<EncrypConfiguration> encrypConfiguration)
+        public AccountRepo(IOptions<JwtConfiguration> jwtConfiguration, DefaultDbContext defaultDbContext, IOptions<EncrypConfiguration> encrypConfiguration)
         {
             _jwtConfiguration = jwtConfiguration.Value;
             _defaultDbContext = defaultDbContext;
@@ -118,7 +118,7 @@ namespace SmartFishLogin.Infra.Repositories
                     var errorDuplicateUser = new ErrorsListDto(SecurityMsg.duplycateUser, SecurityMsg.verifyInfo);
                     errors.Add(errorDuplicateUser);
                 }
-                if (param.Password == param.PasswordRepeat)
+                if (param.Password != param.PasswordRepeat)
                 {
                     var errorDuplicateUser = new ErrorsListDto(SecurityMsg.equalPass, SecurityMsg.verifyInfo);
                     errors.Add(errorDuplicateUser);

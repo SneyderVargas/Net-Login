@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SmartFishLogin.Core.Interfaces
 {
-    public interface ILogin
+    public interface IAccount
     {
         Task<ResultDto<LoginResultDto, List<ErrorsListDto>>> Login(LoginRequestDto param);
         Task<ResultDto<LoginResultDto, List<ErrorsListDto>>> RegisterUser(RegisterUserRequestDto param);

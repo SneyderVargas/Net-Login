@@ -13,13 +13,13 @@ using System.Text;
 
 namespace SmartFishLogin.Controllers
 {
-    [Route("[controller]/[action]")]
-    public class LoginController : Controller
+    [Route("/api/1.0.0/[controller]/[action]")]
+    public class AccountController : Controller
     {
-        private readonly ILogin _login;
-        private readonly ILogger<LoginController> _logger;
+        private readonly IAccount _login;
+        private readonly ILogger<AccountController> _logger;
 
-        public LoginController(ILogin login, ILogger<LoginController> logger)
+        public AccountController(IAccount login, ILogger<AccountController> logger)
         {
             _login = login;
             _logger = logger;
