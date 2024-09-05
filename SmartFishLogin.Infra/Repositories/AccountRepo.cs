@@ -199,7 +199,7 @@ namespace SmartFishLogin.Infra.Repositories
 
                     var rr = new ResultDto<LoginResultDto, List<ErrorsListDto>>();
                     rr.Resul = null;
-                    rr.Error = null;
+                    rr.Error = errors;
                     return rr;
 
                 }
