@@ -82,13 +82,13 @@ namespace SmartFishLogin.Infra.Repositories
                 var ConcreteCreatorSmartFishLogin = new ConcreteCreatorToken();
 
                 var claims = new List<Claim> {
-                    new Claim(JwtRegisteredClaimNames.NameId, "sneyder")
+                    new Claim(JwtRegisteredClaimNames.NameId, User.Name)
                 };
                 var ParamTokens = new GenerateTokenDto
                 {
-                    Audiencia = "Login",
+                    Audiencia = _jwtConfiguration.Audiencia,
                     Claims = claims,
-                    ExperiTimen = DateTime.Now.AddDays(1),
+                    ExperiTimen = DateTime.Now.AddDays(_jwtConfiguration.ExperiTimen),
                     Key = _jwtConfiguration.Key
                 };
                 var ServisToken = await ClientSmartFistTokens.GenerateToken(ConcreteCreatorSmartFishLogin, ParamTokens);
@@ -210,7 +210,7 @@ namespace SmartFishLogin.Infra.Repositories
             }
             catch (Exception ex)
             {
-                string mensajeModificado = $"{ex.Message} <- (Clase: {GetType().Name}, Método : {nameof(Login)})";
+                string mensajeModificado = $"{ex.Message} <- (Clase: {GetType().Name}, Método : {nameof(RegisterUser)})";
                 throw new Exception(mensajeModificado);
             }
         }
